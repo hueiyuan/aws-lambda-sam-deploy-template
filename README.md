@@ -33,3 +33,7 @@ You need to use `--use-container` to install additional python lib. Since some l
 ```
 sam deploy --guided
 ```
+
+## Reference
+* [What is the AWS Serverless Application Model (AWS SAM)?](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+
