@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: >-
+  Lambda function for example
+
+Parameters:
+  ENV:
+    AllowedValues:
+      - staging
+      - production
+    Type: String
+    Default: staging
+
+Resources:
+  DataExceptionAlartLambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: !Sub 'example_lambda_${ENV}'
+      Runtime: python3.8
+      CodeUri: src/
+      Handler: main.lambda_handler
+      Description: >-
+        The lambda function just for example and testing.
+      MemorySize: 128
+      Timeout: 300
+      Role: 'arn:aws:iam::{account_id}:role/{your_iam_role}'
+      Environment:
+        Variables:
+          ENV: !Ref ENV
+      Tags:
+        Name: !Sub 'example_lambda_${ENV}'
+        Environment: !Ref ENV
+  
+  LambdaFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DependsOn: DataExceptionAlartLambda
+    Properties:
+      LogGroupName:
+        Fn::Join:
+        - ''
+        - - "/aws/lambda/"
+          - Ref: DataExceptionAlartLambda
+      RetentionInDays: 30
+
